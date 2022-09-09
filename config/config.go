@@ -2,10 +2,11 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	cfg "github.com/ihatiko/viper-env"
 	"github.com/spf13/viper"
 	"log"
-	"path"
+	"os"
 	"time"
 )
 
@@ -14,28 +15,24 @@ type Config struct {
 }
 
 type Server struct {
-	AppVersion        string
+	Name              string
+	Version           string
 	Port              string
 	PprofPort         string
 	Mode              string
-	JwtSecretKey      string
-	CookieName        string
 	ReadTimeout       time.Duration
 	WriteTimeout      time.Duration
-	SSL               bool
 	CtxDefaultTimeout time.Duration
-	CSRF              bool
 	Debug             bool
 }
 
-const (
-	localConfigPath      = "config.yml"
-	productionConfigPath = "production.yml"
-	configFolder         = "config"
-)
-
-func GetConfig() (*cfg.Config, error) {
-	path := path.Join(configFolder)
+func GetConfig() (*Config, error) {
+	config := localConfigPath
+	stand := os.Getenv(standENV)
+	if stand == productionStand {
+		config = productionConfigPath
+	}
+	path := fmt.Sprintf("%s/%s", configFolder, config)
 	cfgFile, err := LoadConfig(path)
 	if err != nil {
 		return nil, err
@@ -49,24 +46,23 @@ func GetConfig() (*cfg.Config, error) {
 	return cfg, nil
 }
 
-func LoadConfig(filename string) (*viper.Viper, error) {
-	v := viper.New()
-	v.SetConfigName(filename)
-	v.AddConfigPath(".")
-	v.AutomaticEnv()
-	if err := v.ReadInConfig(); err != nil {
+func LoadConfig(filename string) (*cfg.Config, error) {
+	cfg := cfg.New(viper.New())
+	cfg.SetConfigName(filename)
+	cfg.AddConfigPath(".")
+	cfg.AutomaticEnv()
+	if err := cfg.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			return nil, errors.New("config file not found")
 		}
 		return nil, err
 	}
 
-	return v, nil
+	return cfg, nil
 }
 
-func ParseConfig(v *viper.Viper) (*cfg.Config, error) {
-	var c cfg.Config
-
+func ParseConfig(v *cfg.Config) (*Config, error) {
+	var c Config
 	err := v.Unmarshal(&c)
 	if err != nil {
 		log.Printf("unable to decode into struct, %v", err)
