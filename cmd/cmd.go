@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/ihatiko/log"
 	"test/config"
+	"test/internal/server"
 )
 
 func Run() {
@@ -10,6 +10,6 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
-	log.FatalF("%s", "key")
-	cfg = cfg
+	server := server.NewServer(cfg)
+	server.Run()
 }
