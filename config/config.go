@@ -3,15 +3,17 @@ package config
 import (
 	"errors"
 	"fmt"
+	"github.com/ihatiko/log"
 	cfg "github.com/ihatiko/viper-env"
 	"github.com/spf13/viper"
-	"log"
+	lg "log"
 	"os"
 	"time"
 )
 
 type Config struct {
 	Server *Server
+	Log    *log.Config
 }
 
 type Server struct {
@@ -65,7 +67,7 @@ func ParseConfig(v *cfg.Config) (*Config, error) {
 	var c Config
 	err := v.Unmarshal(&c)
 	if err != nil {
-		log.Printf("unable to decode into struct, %v", err)
+		lg.Printf("unable to decode into struct, %v", err)
 		return nil, err
 	}
 

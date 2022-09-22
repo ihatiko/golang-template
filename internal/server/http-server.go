@@ -14,7 +14,7 @@ func (s *Server) StartHttpServer() {
 		JSONDecoder:  jsoniter.Unmarshal,
 		JSONEncoder:  jsoniter.Marshal,
 	})
-	container := components.NewOpenApiContainer(app)
+	container := components.NewOpenApiContainer(app, s.Config.Server.Debug)
 	container.Middlewares()
 	container.OpenApiRegistryV1()
 	go app.Listen(s.Config.Server.Port)

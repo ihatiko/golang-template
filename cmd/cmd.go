@@ -11,5 +11,6 @@ func Run() {
 		panic(err)
 	}
 	server := server.NewServer(cfg)
+	cfg.Log.SetConfiguration(cfg.Server.Name)
 	server.Run()
 }

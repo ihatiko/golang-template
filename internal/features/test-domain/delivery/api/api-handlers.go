@@ -14,8 +14,8 @@ func NewApiHandler(service test_domain.Service) *Handler {
 }
 
 func (h *Handler) TestGet(ctx *fiber.Ctx) error {
-	//TODO implement me
-	panic("implement me")
+	ctx.Send([]byte("ok"))
+	return nil
 }
 
 func (h *Handler) TestPost(ctx *fiber.Ctx) error {
