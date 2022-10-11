@@ -5,6 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 	"test/config"
+	feature_components "test/internal/server/registry/components/feature-components"
 	"test/internal/server/registry/providers"
 )
 
@@ -18,11 +19,16 @@ func NewServer(config *config.Config) *Server {
 }
 
 func (s *Server) Run() {
+	s.Registry()
 	s.StartHttpServer()
-	s.SystemInterrupt()
+	s.Interrupt()
 }
 
-func (s *Server) SystemInterrupt() {
+func (s *Server) Registry() {
+	feature_components.Registry()
+}
+
+func (s *Server) Interrupt() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	<-quit

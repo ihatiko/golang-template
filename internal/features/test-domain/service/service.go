@@ -1,24 +1,28 @@
 package service
 
-type Domain1Service struct {
+type TestDomain struct {
 }
 
-func (Domain1Service) Domain1Get() error {
+func NewDomain1Service() *TestDomain {
+	return &TestDomain{}
+}
+
+func (s TestDomain) Domain1Get() error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (Domain1Service) Domain1Post() error {
+func (s TestDomain) Domain1Post() error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (Domain1Service) Domain1Patch() error {
+func (s TestDomain) Domain1Patch() error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (Domain1Service) Domain1Delete() error {
+func (s TestDomain) Domain1Delete() error {
 	//TODO implement me
 	panic("implement me")
 }
