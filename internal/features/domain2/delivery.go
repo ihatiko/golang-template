@@ -1,9 +1,9 @@
-package test_domain
+package domain2
 
 import "github.com/gofiber/fiber/v2"
 
 const (
-	FeatureName = "test-domain"
+	FeatureName = "domain2"
 )
 
 type ApiHandler interface {

@@ -14,11 +14,12 @@ type Server struct {
 	Providers *providers.Container
 }
 
-func NewServer(config *config.Config) *Server {
-	return &Server{Config: config}
+func NewServer(config *config.Config, providers *providers.Container) *Server {
+	return &Server{Config: config, Providers: providers}
 }
 
 func (s *Server) Run() {
+	s.Providers.Registry()
 	s.Registry()
 	s.StartHttpServer()
 	s.Interrupt()

@@ -16,15 +16,15 @@ func (cnt *openApiContainer) Middlewares() {
 	cnt.App.Use(requestid.New())
 }
 
-func (cnt *openApiContainer) Log(ctx *fiber.Ctx) error {
+func (cnt *openApiContainer) Log(context *fiber.Ctx) error {
 	t := time.Now()
-	URL := ctx.OriginalURL()
-	Method := ctx.Method()
-	Status := ctx.Response().StatusCode()
-	err := ctx.Next()
+	URL := context.OriginalURL()
+	Method := context.Method()
+	Status := context.Response().StatusCode()
+	err := context.Next()
 	Duration := time.Since(t)
 	if cnt.Debug {
-		log.HttpMiddlewareAccessLoggerDebug(Method, URL, Status, Duration, string(ctx.Request().Body()), string(ctx.Response().Body()))
+		log.HttpMiddlewareAccessLoggerDebug(Method, URL, Status, Duration, string(context.Request().Body()), string(context.Response().Body()))
 	} else {
 		log.HttpMiddlewareAccessLogger(Method, URL, Status, Duration)
 	}

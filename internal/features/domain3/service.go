@@ -1,4 +1,4 @@
-package test_domain
+package domain3
 
 type Service interface {
 	Domain1Get() error

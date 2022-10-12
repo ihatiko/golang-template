@@ -3,11 +3,15 @@ package open_api
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/ihatiko/di"
-	"test/internal/features/test-domain"
+	"test/internal/features/domain1"
+	"test/internal/features/domain2"
+	"test/internal/features/domain3"
 )
 
 const (
-	v1 = "/api/v1"
+	v1      = "/api/v1"
+	metrics = "/metrics"
+	health  = "/health"
 )
 
 type openApiContainer struct {
@@ -33,10 +37,24 @@ func (cnt *openApiContainer) OpenApiRegistryV1() {
 }
 
 func (cnt *openApiContainer) ConfigureTestDomainV1() {
-	di.Invoke(func(h test_domain.ApiHandler) {
-		cnt.V1.Get(test_domain.FeatureName, h.TestGet)
-		cnt.V1.Post(test_domain.FeatureName, h.TestPost)
-		cnt.V1.Patch(test_domain.FeatureName, h.TestPatch)
-		cnt.V1.Delete(test_domain.FeatureName, h.TestDelete)
+	di.Invoke(func(h domain1.ApiHandler) {
+		cnt.V1.Get(domain1.FeatureName, h.TestGet)
+		cnt.V1.Post(domain1.FeatureName, h.TestPost)
+		cnt.V1.Patch(domain1.FeatureName, h.TestPatch)
+		cnt.V1.Delete(domain1.FeatureName, h.TestDelete)
+	})
+
+	di.Invoke(func(h domain2.ApiHandler) {
+		cnt.V1.Get(domain2.FeatureName, h.TestGet)
+		cnt.V1.Post(domain2.FeatureName, h.TestPost)
+		cnt.V1.Patch(domain2.FeatureName, h.TestPatch)
+		cnt.V1.Delete(domain2.FeatureName, h.TestDelete)
+	})
+
+	di.Invoke(func(h domain3.ApiHandler) {
+		cnt.V1.Get(domain3.FeatureName, h.TestGet)
+		cnt.V1.Post(domain3.FeatureName, h.TestPost)
+		cnt.V1.Patch(domain3.FeatureName, h.TestPatch)
+		cnt.V1.Delete(domain3.FeatureName, h.TestDelete)
 	})
 }
