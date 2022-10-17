@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/ihatiko/log"
 	"test/pkg/jaeger"
+	"test/pkg/nats"
 	"test/pkg/postgres"
 	"test/pkg/redis"
 	"time"
@@ -26,4 +27,5 @@ type Config struct {
 	Postgres *postgres.Config
 	Jaeger   *jaeger.Config
 	Redis    *redis.Config
+	Nats     *nats.Config
 }

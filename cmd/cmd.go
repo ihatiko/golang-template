@@ -1,15 +1,16 @@
 package cmd
 
 import (
+	"github.com/ihatiko/config"
 	"github.com/ihatiko/log"
 	"github.com/opentracing/opentracing-go"
-	"test/config"
+	cfg "test/config"
 	"test/internal/server"
 	"test/internal/server/registry/providers"
 )
 
 func Run() {
-	cfg, err := config.GetConfig()
+	cfg, err := config.GetConfig[cfg.Config]()
 	if err != nil {
 		panic(err)
 	}
@@ -28,9 +29,23 @@ func Run() {
 		log.Fatal(err)
 	}
 	log.Info("Redis connected")
+
+	/*	natsConn, err := cfg.Nats.NewNatsConnection()
+		if err != nil {
+			log.FatalF("NewNatsConnect: %+v", err)
+		}
+		log.InfoF(
+			"Nats Connected: Status: %+v IsConnected: %v ConnectedUrl: %v ConnectedServerId: %v",
+			natsConn.NatsConn().Status(),
+			natsConn.NatsConn().IsConnected(),
+			natsConn.NatsConn().ConnectedUrl(),
+			natsConn.NatsConn().ConnectedServerId(),
+		)*/
+
 	server := server.NewServer(
 		cfg, providers.NewProvidersContainer(
 			redis,
+			nil,
 		),
 	)
 	server.Run()

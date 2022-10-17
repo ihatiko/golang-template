@@ -19,4 +19,5 @@ func (s *Server) StartHttpServer() {
 	container.Middlewares()
 	container.OpenApiRegistryV1()
 	go app.Listen(s.Config.Server.Port)
+	s.HttpServer = app
 }

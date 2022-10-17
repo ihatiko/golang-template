@@ -29,3 +29,8 @@ redis:
   PoolSize: 12000
   PoolTimeout: 240
   DB: 0
+
+Nats:
+  URL: "localhost:4222"
+  ClusterID: local
+  ClientID: local
