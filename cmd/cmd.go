@@ -30,22 +30,29 @@ func Run() {
 	}
 	log.Info("Redis connected")
 
-	/*	natsConn, err := cfg.Nats.NewNatsConnection()
-		if err != nil {
-			log.FatalF("NewNatsConnect: %+v", err)
-		}
-		log.InfoF(
-			"Nats Connected: Status: %+v IsConnected: %v ConnectedUrl: %v ConnectedServerId: %v",
-			natsConn.NatsConn().Status(),
-			natsConn.NatsConn().IsConnected(),
-			natsConn.NatsConn().ConnectedUrl(),
-			natsConn.NatsConn().ConnectedServerId(),
-		)*/
+	postgres, err := cfg.Postgres.NewConnection()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Info("Redis connected")
+
+	natsConn, err := cfg.Nats.NewNatsConnection()
+	if err != nil {
+		log.FatalF("NewNatsConnect: %+v", err)
+	}
+	log.InfoF(
+		"Nats Connected: Status: %+v IsConnected: %v ConnectedUrl: %v ConnectedServerId: %v",
+		natsConn.NatsConn().Status(),
+		natsConn.NatsConn().IsConnected(),
+		natsConn.NatsConn().ConnectedUrl(),
+		natsConn.NatsConn().ConnectedServerId(),
+	)
 
 	server := server.NewServer(
 		cfg, providers.NewProvidersContainer(
 			redis,
-			nil,
+			&natsConn,
+			postgres,
 		),
 	)
 	server.Run()

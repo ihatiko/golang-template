@@ -27,7 +27,7 @@ func (c *Config) toPgConnection() string {
 	)
 	return dataSourceName
 }
-func (c *Config) ToConnection() (*sqlx.DB, error) {
+func (c *Config) NewConnection() (*sqlx.DB, error) {
 	config := stdlib.DriverConfig{
 		ConnConfig: pgx.ConnConfig{
 			PreferSimpleProtocol: true,

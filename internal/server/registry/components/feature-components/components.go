@@ -2,15 +2,16 @@ package feature_components
 
 import (
 	"github.com/ihatiko/di"
-	"test/internal/features/domain1"
-	domain1api "test/internal/features/domain1/delivery/api"
-	domain1service "test/internal/features/domain1/service"
-	"test/internal/features/domain2"
-	domain2api "test/internal/features/domain2/delivery/api"
-	domain3api "test/internal/features/domain2/delivery/api"
-	domain2service "test/internal/features/domain2/service"
-	domain3service "test/internal/features/domain2/service"
-	"test/internal/features/domain3"
+	"test/internal/features/basket"
+	basketApi "test/internal/features/basket/delivery/api"
+	basketService "test/internal/features/basket/service"
+	"test/internal/features/payments"
+	paymentsApi "test/internal/features/payments/delivery/api"
+	paymentsService "test/internal/features/payments/service"
+	"test/internal/features/products"
+	productsApi "test/internal/features/products/delivery/api"
+	productsRepository "test/internal/features/products/repository"
+	productsService "test/internal/features/products/service"
 )
 
 func Registry() {
@@ -20,17 +21,17 @@ func Registry() {
 }
 
 func SetDelivery() {
-	di.ProvideInterface[domain1.ApiHandler](domain1api.NewApiHandler)
-	di.ProvideInterface[domain2.ApiHandler](domain2api.NewApiHandler)
-	di.ProvideInterface[domain3.ApiHandler](domain3api.NewApiHandler)
+	di.ProvideInterface[products.ApiHandler](productsApi.NewApiHandler)
+	di.ProvideInterface[payments.ApiHandler](paymentsApi.NewApiHandler)
+	di.ProvideInterface[basket.ApiHandler](basketApi.NewApiHandler)
 }
 
 func SetRepository() {
-
+	di.ProvideInterface[products.Repository](productsRepository.NewProductsRepository)
 }
 
 func SetService() {
-	di.ProvideInterface[domain1.Service](domain1service.NewDomain1Service)
-	di.ProvideInterface[domain2.Service](domain2service.NewDomain1Service)
-	di.ProvideInterface[domain3.Service](domain3service.NewDomain1Service)
+	di.ProvideInterface[products.Service](productsService.NewProductsService)
+	di.ProvideInterface[payments.Service](paymentsService.NewPaymentsService)
+	di.ProvideInterface[basket.Service](basketService.NewBasketService)
 }
