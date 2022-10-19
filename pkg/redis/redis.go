@@ -16,6 +16,10 @@ type Config struct {
 	DB          int
 }
 
+const (
+	Redis = "redis"
+)
+
 func (cfg *Config) NewRedisClient() (*redis.Client, error) {
 	redisHost := cfg.Host
 

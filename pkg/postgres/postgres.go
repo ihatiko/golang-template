@@ -15,6 +15,9 @@ const (
 	maxIdleConnections = 30
 	connMaxIdleTime    = 20
 )
+const (
+	Postgres = "postgres"
+)
 
 func (c *Config) toPgConnection() string {
 	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
@@ -34,8 +37,8 @@ func (c *Config) NewConnection() (*sqlx.DB, error) {
 		},
 	}
 	stdlib.RegisterDriverConfig(&config)
-
-	db, err := sqlx.Connect(c.PgDriver, config.ConnectionString(c.toPgConnection()))
+	connectionString := config.ConnectionString(c.toPgConnection())
+	db, err := sqlx.Connect(c.PgDriver, connectionString)
 	if err != nil {
 		return nil, errors.Wrap(err, "Database.Connect")
 	}

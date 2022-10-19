@@ -2,6 +2,11 @@ server:
   port: :10001
   name: test_tecture
   debug: true
+  timeout: 15
+  readTimeout: 5
+  writeTimeout: 5
+  maxConnectionIdle: 5
+  maxConnectionAge: 5
 
 log:
   encoding: json
@@ -14,7 +19,7 @@ postgres:
   User: postgres
   Password: postgres
   Dbname: tecture
-  Sslmode: require
+  Sslmode: disable
   PgDriver: pgx
   CreateDb: true
 
@@ -22,7 +27,7 @@ jaeger:
   Host: localhost:6831
   LogSpans: false
 
-Redis:
+redis:
   Host: "localhost:6379"
   Password:
   DefaultDB: 0
@@ -31,7 +36,7 @@ Redis:
   PoolTimeout: 240
   DB: 0
 
-Nats:
+nats:
   URL: "localhost:4222"
-  ClusterID: local
-  ClientID: local
+  ClusterID: microservice
+  ClientID: microservice_a

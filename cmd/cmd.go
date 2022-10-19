@@ -28,20 +28,20 @@ func Run() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Info("Redis connected")
+	log.Info("redis connected")
 
 	postgres, err := cfg.Postgres.NewConnection()
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Info("Redis connected")
+	log.Info("postgres connected")
 
 	natsConn, err := cfg.Nats.NewNatsConnection()
 	if err != nil {
 		log.FatalF("NewNatsConnect: %+v", err)
 	}
 	log.InfoF(
-		"Nats Connected: Status: %+v IsConnected: %v ConnectedUrl: %v ConnectedServerId: %v",
+		"Nats Connected: Status: %+v",
 		natsConn.NatsConn().Status(),
 		natsConn.NatsConn().IsConnected(),
 		natsConn.NatsConn().ConnectedUrl(),

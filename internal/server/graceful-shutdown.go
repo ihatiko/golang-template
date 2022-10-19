@@ -1,33 +1,52 @@
 package server
 
 import (
+	"context"
 	"github.com/ihatiko/log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
+	"time"
 )
+
+type GracefulContext struct {
+	CancelFunc context.CancelFunc
+	Context    context.Context
+	WgJobs     sync.WaitGroup
+}
 
 func (s *Server) GracefulShutdown() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-	select {
-	case v := <-quit:
-		log.ErrorF("signal.Notify: %v", v)
-	case done := <-s.Context.Done():
-		log.ErrorF("ctx.Done: %v", done)
-	}
+	<-quit
 
-	log.Info("Start stopping http server")
-	if err := s.HttpServer.Shutdown(); err != nil {
-		log.Fatal(err)
-	}
-	log.Info("Stop http server")
+	Compose(
+		s.HttpServer.Shutdown,
+		s.Delay,
+		s.WaitJobs,
+		s.Providers.Redis.Close,
+		s.Providers.Postgres.Close,
+	)
 
-	log.Info("Start stopping redis client")
-	if err := s.Providers.Redis.Close(); err != nil {
-		log.Fatal(err)
-	}
-	log.Info("Stop redis client")
+	log.Info("Server exit properly")
+}
 
-	log.Info("Server exited properly")
+func (s *Server) WaitJobs() error {
+	s.GracefulContext.WgJobs.Wait()
+	return nil
+}
+
+func (s *Server) Delay() error {
+	time.Sleep(s.Config.Server.CtxDefaultTimeout)
+	return nil
+}
+
+func Compose(fns ...func() error) {
+	for _, fn := range fns {
+		err := fn()
+		if err != nil {
+			log.Error(err)
+		}
+	}
 }

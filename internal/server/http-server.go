@@ -6,6 +6,8 @@ import (
 	"test/internal/server/registry/components/delivery/open-api"
 )
 
+const http = "http"
+
 func (s *Server) StartHttpServer() {
 	app := fiber.New(fiber.Config{
 		AppName:       s.Config.Server.Name,

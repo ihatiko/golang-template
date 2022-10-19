@@ -13,6 +13,9 @@ const (
 	maxOut             = 5
 	maxPubAcksInflight = 25
 )
+const (
+	Nats = "nats"
+)
 
 func (cfg *Config) NewNatsConnection() (stan.Conn, error) {
 	return stan.Connect(
