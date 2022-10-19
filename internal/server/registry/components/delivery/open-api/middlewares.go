@@ -19,6 +19,9 @@ func (cnt *openApiContainer) Middlewares() {
 func (cnt *openApiContainer) Log(context *fiber.Ctx) error {
 	t := time.Now()
 	URL := context.OriginalURL()
+	if URL == favIcon || URL == health || URL == metrics {
+		return context.Next()
+	}
 	Method := context.Method()
 	Status := context.Response().StatusCode()
 	err := context.Next()

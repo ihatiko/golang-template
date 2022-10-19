@@ -19,8 +19,11 @@ func (s *Server) StartHttpServer() {
 		StrictRouting: true,
 	})
 	container := open_api.NewOpenApiContainer(app, s.Config.Server.Debug)
+
 	container.Middlewares()
 	container.OpenApiRegistryV1()
+	container.ServicePoints()
+
 	go app.Listen(s.Config.Server.Port)
 	s.HttpServer = app
 }
