@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
 	"test/internal/server/registry/components/delivery/open-api"
+	"time"
 )
 
 const http = "http"
@@ -11,8 +12,8 @@ const http = "http"
 func (s *Server) StartHttpServer() {
 	app := fiber.New(fiber.Config{
 		AppName:       s.Config.Server.Name,
-		WriteTimeout:  s.Config.Server.WriteTimeout,
-		ReadTimeout:   s.Config.Server.ReadTimeout,
+		WriteTimeout:  time.Second * s.Config.Server.WriteTimeout,
+		ReadTimeout:   time.Second * s.Config.Server.ReadTimeout,
 		JSONDecoder:   jsoniter.Unmarshal,
 		JSONEncoder:   jsoniter.Marshal,
 		StrictRouting: true,

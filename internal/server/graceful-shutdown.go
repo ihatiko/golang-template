@@ -39,11 +39,11 @@ func (s *Server) WaitJobs() error {
 	return nil
 }
 func (s *Server) NatsDelay() error {
-	time.Sleep(s.Config.Nats.ProcessTimeout)
+	time.Sleep(time.Second * s.Config.Nats.ProcessTimeout)
 	return nil
 }
 func (s *Server) Delay() error {
-	time.Sleep(s.Config.Server.CtxDefaultTimeout)
+	time.Sleep(time.Second * s.Config.Server.CtxDefaultTimeout)
 	return nil
 }
 
