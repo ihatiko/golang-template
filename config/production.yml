@@ -39,3 +39,4 @@ nats:
   URL: "localhost:4222"
   ClusterID: microservice
   ClientID: microservice_a
+  ProcessTimeout: 3
