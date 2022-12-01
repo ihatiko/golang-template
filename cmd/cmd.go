@@ -7,10 +7,15 @@ import (
 	cfg "test/config"
 	"test/internal/server"
 	"test/internal/server/registry/providers"
+	"test/pkg/minio"
+)
+
+const (
+	configPath = "./config/config.yml"
 )
 
 func Run() {
-	cfg, err := config.GetConfig[cfg.Config]()
+	cfg, err := config.GetConfig[cfg.Config](configPath)
 	if err != nil {
 		panic(err)
 	}
@@ -24,8 +29,14 @@ func Run() {
 	defer tracer.Closer.Close()
 	log.Info("Jaeger connected")
 
+	minioClient, err := minio.NewClient(cfg.Minio)
+
 	server := server.NewServer(
-		cfg, providers.NewProvidersContainer(),
+		cfg,
+		providers.NewProvidersContainer(
+			minioClient,
+			cfg.FileServiceConfig,
+		),
 	)
 	server.Run()
 }

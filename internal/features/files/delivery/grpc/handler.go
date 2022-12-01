@@ -2,11 +2,13 @@ package grpc
 
 import (
 	"bytes"
+	"github.com/ihatiko/log"
+	"github.com/opentracing/opentracing-go"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io"
-	"log"
 	"test/internal/features/files"
+	"test/internal/features/files/models"
 	file_service_config "test/pkg/file-service-config"
 	"test/protoc/file"
 )
@@ -21,6 +23,8 @@ func NewApiHandler(service files.Service, fileService *file_service_config.Confi
 }
 
 func (h Handlers) UploadFile(stream file.FileService_UploadFileServer) error {
+	span, ctx := opentracing.StartSpanFromContext(stream.Context(), "fileGrpcHandler.UploadFile")
+	defer span.Finish()
 	req, err := stream.Recv()
 	if err != nil {
 		return status.Errorf(codes.Unknown, "cannot receive image info")
@@ -36,34 +40,47 @@ func (h Handlers) UploadFile(stream file.FileService_UploadFileServer) error {
 		return err
 	}
 	for {
-		log.Print("waiting to receive more data")
+		log.Info("Start receive image")
 		req, err := stream.Recv()
 		if err == io.EOF {
-			log.Print("no more data")
+			log.Info("No more data")
 			break
 		}
 		if err != nil {
+			failedRequests.Inc()
 			return status.Errorf(codes.Unknown, "cannot receive chunk data: %v", err)
 		}
 
 		chunk := req.GetChunkData()
 		size := len(chunk)
 
-		log.Printf("received a chunk with size: %d", size)
+		log.Info("received a chunk with size: %d", size)
 
 		imageSize += size
 		if h.FileService.IsNotValidSize(imageSize) {
+			failedRequests.Inc()
 			return status.Errorf(codes.InvalidArgument, "image is too large: %d > %d", imageSize, h.FileService.MaxSizeMb)
 		}
 		_, err = imageData.Write(chunk)
 		if err != nil {
+			failedRequests.Inc()
 			return status.Errorf(codes.Internal, "cannot write chunk data: %v", err)
 		}
 	}
-	err = h.Service.SaveImage(stream.Context())
+	data, err := h.Service.SaveImage(ctx, models.UploadingFile{
+		ContentType: contentType,
+		Bucket:      bucket,
+		Extension:   extension,
+		Name:        extension,
+		Stream:      bytes.NewReader(imageData.Bytes()),
+	})
+	err = stream.SendAndClose(data)
 	if err != nil {
+		failedRequests.Inc()
 		return status.Errorf(codes.Internal, "cannot write chunk data: %v", err)
 	}
+	successRequests.Inc()
+	log.Info("Save image success")
 	return nil
 }
 

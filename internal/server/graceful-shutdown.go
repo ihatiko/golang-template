@@ -22,7 +22,8 @@ func (s *Server) GracefulShutdown() {
 	<-quit
 
 	Compose(
-		s.HttpServer.Shutdown,
+		s.StopGrpc,
+		s.StopHttp,
 		s.Delay,
 		s.WaitJobs,
 	)
@@ -30,12 +31,19 @@ func (s *Server) GracefulShutdown() {
 	log.Info("Server exit properly")
 }
 
+func (s *Server) StopHttp() error {
+	return s.HttpServer.Shutdown()
+}
+func (s *Server) StopGrpc() error {
+	s.GrpcServer.GracefulStop()
+	return nil
+}
 func (s *Server) WaitJobs() error {
 	s.GracefulContext.WgJobs.Wait()
 	return nil
 }
 func (s *Server) Delay() error {
-	time.Sleep(time.Second * s.Config.Server.CtxDefaultTimeout)
+	time.Sleep(time.Second * s.Config.Server.TimeOut)
 	return nil
 }
 

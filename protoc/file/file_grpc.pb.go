@@ -18,7 +18,7 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// FileServiceClient is the client API for FileService service.
+// FileServiceClient is the client API for FileServiceConfig service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FileServiceClient interface {
@@ -34,7 +34,7 @@ func NewFileServiceClient(cc grpc.ClientConnInterface) FileServiceClient {
 }
 
 func (c *fileServiceClient) UploadFile(ctx context.Context, opts ...grpc.CallOption) (FileService_UploadFileClient, error) {
-	stream, err := c.cc.NewStream(ctx, &FileService_ServiceDesc.Streams[0], "/file.FileService/UploadFile", opts...)
+	stream, err := c.cc.NewStream(ctx, &FileService_ServiceDesc.Streams[0], "/file.FileServiceConfig/UploadFile", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (x *fileServiceUploadFileClient) CloseAndRecv() (*UploadFileResponse, error
 	return m, nil
 }
 
-// FileServiceServer is the server API for FileService service.
+// FileServiceServer is the server API for FileServiceConfig service.
 // All implementations should embed UnimplementedFileServiceServer
 // for forward compatibility
 type FileServiceServer interface {
@@ -119,11 +119,11 @@ func (x *fileServiceUploadFileServer) Recv() (*UploadFileInfoRequest, error) {
 	return m, nil
 }
 
-// FileService_ServiceDesc is the grpc.ServiceDesc for FileService service.
+// FileService_ServiceDesc is the grpc.ServiceDesc for FileServiceConfig service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var FileService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "file.FileService",
+	ServiceName: "file.FileServiceConfig",
 	HandlerType: (*FileServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{

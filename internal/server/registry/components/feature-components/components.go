@@ -1,5 +1,11 @@
 package feature_components
 
+import (
+	"github.com/ihatiko/di"
+	fileHandlers "test/internal/features/files/delivery/grpc"
+	"test/protoc/file"
+)
+
 func Registry() {
 	SetRepository()
 	SetService()
@@ -7,7 +13,7 @@ func Registry() {
 }
 
 func SetDelivery() {
-
+	di.ProvideInterface[file.FileServiceServer](fileHandlers.NewApiHandler)
 }
 
 func SetRepository() {

@@ -10,20 +10,20 @@ import (
 
 type Server struct {
 	Name              string
-	Version           string
 	Port              string
-	PprofPort         string
+	GrpcPort          string
 	Mode              string
 	ReadTimeout       time.Duration
 	WriteTimeout      time.Duration
-	CtxDefaultTimeout time.Duration
-	Debug             bool
+	TimeOut           time.Duration
+	MaxConnectionIdle time.Duration
+	MaxConnectionAge  time.Duration
 }
 
 type Config struct {
-	Server      *Server
-	Log         *log.Config
-	Jaeger      *jaeger.Config
-	Minio       *minio.Config
-	FileService *file_service_config.Config
+	Server            *Server
+	Log               *log.Config
+	Jaeger            *jaeger.Config
+	Minio             *minio.Config
+	FileServiceConfig *file_service_config.Config
 }

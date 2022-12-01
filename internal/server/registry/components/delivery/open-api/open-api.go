@@ -7,28 +7,23 @@ import (
 )
 
 const (
-	v1      = "/grpc/v1"
 	metrics = "/metrics"
 	health  = "/health"
 )
 
 type openApiContainer struct {
-	V1    fiber.Router
-	App   *fiber.App
-	Debug bool
+	App *fiber.App
 }
 
 func NewOpenApiContainer(
 	app *fiber.App,
-	debug bool,
 ) *openApiContainer {
 
 	return &openApiContainer{
-		App:   app,
-		V1:    app.Group(v1),
-		Debug: debug,
+		App: app,
 	}
 }
+
 func (cnt *openApiContainer) ServicePoints() {
 	cnt.App.Get(health, func(ctx *fiber.Ctx) error {
 		ctx.Write([]byte("ok"))

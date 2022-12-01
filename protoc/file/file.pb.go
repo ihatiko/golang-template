@@ -268,8 +268,8 @@ var file_protoc_file_proto_goTypes = []interface{}{
 }
 var file_protoc_file_proto_depIdxs = []int32{
 	1, // 0: file.UploadFileInfoRequest.info:type_name -> file.FileInfo
-	0, // 1: file.FileService.UploadFile:input_type -> file.UploadFileInfoRequest
-	2, // 2: file.FileService.UploadFile:output_type -> file.UploadFileResponse
+	0, // 1: file.FileServiceConfig.UploadFile:input_type -> file.UploadFileInfoRequest
+	2, // 2: file.FileServiceConfig.UploadFile:output_type -> file.UploadFileResponse
 	2, // [2:3] is the sub-list for method output_type
 	1, // [1:2] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

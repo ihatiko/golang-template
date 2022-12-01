@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"github.com/gofiber/fiber/v2"
+	"google.golang.org/grpc"
 	"sync"
 	"test/config"
 	feature_components "test/internal/server/registry/components/feature-components"
@@ -10,8 +11,8 @@ import (
 )
 
 type Server struct {
-	HttpServer *fiber.App
-
+	HttpServer      *fiber.App
+	GrpcServer      *grpc.Server
 	Config          *config.Config
 	Providers       *providers.Container
 	GracefulContext *GracefulContext
@@ -34,6 +35,7 @@ func (s *Server) Run() {
 	s.Providers.Registry()
 	s.Registry()
 	s.StartHttpServer()
+	s.StartGrpcServer()
 	s.GracefulShutdown()
 }
 

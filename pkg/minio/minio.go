@@ -2,10 +2,12 @@ package minio
 
 import (
 	"context"
+	"fmt"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"io"
 	"log"
+	"path"
 )
 
 type Config struct {
@@ -39,7 +41,7 @@ func (m *Client) connect() error {
 	return err
 }
 
-func (m *Client) Put(ctx context.Context, bucket, name, contentType string, buffer io.Reader, size int64) error {
+func (m *Client) Put(ctx context.Context, bucket, name, contentType, extension string, buffer io.Reader, size int64) (string, error) {
 	_, err := m.client.PutObject(ctx, bucket, name, buffer, size, minio.PutObjectOptions{ContentType: contentType})
-	return err
+	return path.Join(m.cfg.Host, bucket, fmt.Sprintf("%s.%s", name, extension)), err
 }
