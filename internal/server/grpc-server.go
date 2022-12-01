@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 	"net"
+	grpc_container "test/internal/server/registry/components/delivery/grpc"
 	"time"
 )
 
@@ -39,5 +40,9 @@ func (s *Server) StartGrpcServer() {
 			log.Fatal(err)
 		}
 	}()
+	container := grpc_container.NewGrpcContainer(grpcServer)
+	container.ServicePoints()
+	grpc_prometheus.Register(grpcServer)
+
 	s.GrpcServer = grpcServer
 }
