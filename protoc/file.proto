@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package file;
+option go_package = ".;file";
+
+message UploadFileInfoRequest {
+  oneof data {
+    FileInfo info = 1;
+    bytes chunk_data = 2;
+  };
+}
+
+message FileInfo {
+  string bucket = 1;
+  string extension = 2;
+  string name = 3;
+  string contentType = 4;
+}
+
+message UploadFileResponse {
+  string url = 1;
+}
+
+service FileService {
+  rpc UploadFile(stream UploadFileInfoRequest) returns (UploadFileResponse) {};
+}

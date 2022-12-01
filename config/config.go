@@ -2,10 +2,9 @@ package config
 
 import (
 	"github.com/ihatiko/log"
+	file_service_config "test/pkg/file-service-config"
 	"test/pkg/jaeger"
-	"test/pkg/nats"
-	"test/pkg/postgres"
-	"test/pkg/redis"
+	"test/pkg/minio"
 	"time"
 )
 
@@ -22,10 +21,9 @@ type Server struct {
 }
 
 type Config struct {
-	Server   *Server
-	Log      *log.Config
-	Postgres *postgres.Config
-	Jaeger   *jaeger.Config
-	Redis    *redis.Config
-	Nats     *nats.Config
+	Server      *Server
+	Log         *log.Config
+	Jaeger      *jaeger.Config
+	Minio       *minio.Config
+	FileService *file_service_config.Config
 }

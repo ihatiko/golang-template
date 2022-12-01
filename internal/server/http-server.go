@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-const http = "http"
-
 func (s *Server) StartHttpServer() {
 	app := fiber.New(fiber.Config{
 		AppName:       s.Config.Server.Name,
@@ -21,7 +19,6 @@ func (s *Server) StartHttpServer() {
 	container := open_api.NewOpenApiContainer(app, s.Config.Server.Debug)
 
 	container.Middlewares()
-	container.OpenApiRegistryV1()
 	container.ServicePoints()
 
 	go app.Listen(s.Config.Server.Port)

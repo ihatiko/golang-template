@@ -10,7 +10,8 @@ import (
 )
 
 type Server struct {
-	HttpServer      *fiber.App
+	HttpServer *fiber.App
+
 	Config          *config.Config
 	Providers       *providers.Container
 	GracefulContext *GracefulContext

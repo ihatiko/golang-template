@@ -25,10 +25,6 @@ func (s *Server) GracefulShutdown() {
 		s.HttpServer.Shutdown,
 		s.Delay,
 		s.WaitJobs,
-		s.Providers.Redis.Close,
-		s.Providers.Postgres.Close,
-		s.NatsDelay,
-		(*s.Providers.NatsConnection).Close,
 	)
 
 	log.Info("Server exit properly")
@@ -36,10 +32,6 @@ func (s *Server) GracefulShutdown() {
 
 func (s *Server) WaitJobs() error {
 	s.GracefulContext.WgJobs.Wait()
-	return nil
-}
-func (s *Server) NatsDelay() error {
-	time.Sleep(time.Second * s.Config.Nats.ProcessTimeout)
 	return nil
 }
 func (s *Server) Delay() error {
