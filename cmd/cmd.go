@@ -30,7 +30,9 @@ func Run() {
 	log.Info("Jaeger connected")
 
 	minioClient, err := minio.NewClient(cfg.Minio)
-
+	if err != nil {
+		log.Fatal(err)
+	}
 	server := server.NewServer(
 		cfg,
 		providers.NewProvidersContainer(
