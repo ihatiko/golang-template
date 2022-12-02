@@ -21,8 +21,8 @@ jaeger:
   LogSpans: false
 
 minio:
-  Host: 123
-  User: 123
-  Password: 123
+  Host: localhost:9000
+  User: AKIAIOSFODNN7EXAMPLE
+  Password: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
   SSL: false
   MaxImageSizeMb: 20

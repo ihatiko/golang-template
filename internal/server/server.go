@@ -2,12 +2,12 @@ package server
 
 import (
 	"context"
+	"file_service/config"
+	feature_components "file_service/internal/server/registry/components/feature-components"
+	"file_service/internal/server/registry/providers"
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/grpc"
 	"sync"
-	"test/config"
-	feature_components "test/internal/server/registry/components/feature-components"
-	"test/internal/server/registry/providers"
 )
 
 type Server struct {

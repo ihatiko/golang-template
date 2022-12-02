@@ -1,9 +1,9 @@
 package providers
 
 import (
+	file_service_config "file_service/pkg/file-service-config"
+	"file_service/pkg/minio"
 	"github.com/ihatiko/di"
-	file_service_config "test/pkg/file-service-config"
-	"test/pkg/minio"
 )
 
 type Container struct {

@@ -1,4 +1,4 @@
-module test
+module file_service
 
 go 1.18
 

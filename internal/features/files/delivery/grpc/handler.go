@@ -2,15 +2,15 @@ package grpc
 
 import (
 	"bytes"
+	"file_service/internal/features/files"
+	"file_service/internal/features/files/models"
+	file_service_config "file_service/pkg/file-service-config"
+	"file_service/protoc/file"
 	"github.com/ihatiko/log"
 	"github.com/opentracing/opentracing-go"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io"
-	"test/internal/features/files"
-	"test/internal/features/files/models"
-	file_service_config "test/pkg/file-service-config"
-	"test/protoc/file"
 )
 
 type Handlers struct {
@@ -54,7 +54,7 @@ func (h Handlers) UploadFile(stream file.FileService_UploadFileServer) error {
 		chunk := req.GetChunkData()
 		size := len(chunk)
 
-		log.Info("received a chunk with size: %d", size)
+		log.InfoF("received a chunk with size: %d", size)
 
 		imageSize += size
 		if h.FileService.IsNotValidSize(imageSize) {
@@ -71,9 +71,14 @@ func (h Handlers) UploadFile(stream file.FileService_UploadFileServer) error {
 		ContentType: contentType,
 		Bucket:      bucket,
 		Extension:   extension,
-		Name:        extension,
+		Name:        name,
 		Stream:      bytes.NewReader(imageData.Bytes()),
+		Size:        int64(imageSize),
 	})
+	if err != nil {
+		failedRequests.Inc()
+		return status.Errorf(codes.Internal, "cannot write chunk data: %v", err)
+	}
 	err = stream.SendAndClose(data)
 	if err != nil {
 		failedRequests.Inc()

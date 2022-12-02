@@ -1,9 +1,9 @@
 package grpc
 
 import (
+	"file_service/protoc/file"
 	"github.com/ihatiko/di"
 	"google.golang.org/grpc"
-	"test/protoc/file"
 )
 
 type grpcContainer struct {

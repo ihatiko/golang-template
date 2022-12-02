@@ -1,17 +1,17 @@
 package cmd
 
 import (
+	cfg "file_service/config"
+	"file_service/internal/server"
+	"file_service/internal/server/registry/providers"
+	"file_service/pkg/minio"
 	"github.com/ihatiko/config"
 	"github.com/ihatiko/log"
 	"github.com/opentracing/opentracing-go"
-	cfg "test/config"
-	"test/internal/server"
-	"test/internal/server/registry/providers"
-	"test/pkg/minio"
 )
 
 const (
-	configPath = "./config/config.yml"
+	configPath = "./config/config"
 )
 
 func Run() {

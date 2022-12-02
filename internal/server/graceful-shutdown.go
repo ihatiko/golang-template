@@ -32,17 +32,21 @@ func (s *Server) GracefulShutdown() {
 }
 
 func (s *Server) StopHttp() error {
+	log.Info("Stopping http server")
 	return s.HttpServer.Shutdown()
 }
 func (s *Server) StopGrpc() error {
+	log.Info("Stopping grpc server")
 	s.GrpcServer.GracefulStop()
 	return nil
 }
 func (s *Server) WaitJobs() error {
+	log.Info("Waiting jobs")
 	s.GracefulContext.WgJobs.Wait()
 	return nil
 }
 func (s *Server) Delay() error {
+	log.Info("Waiting timeout")
 	time.Sleep(time.Second * s.Config.Server.TimeOut)
 	return nil
 }

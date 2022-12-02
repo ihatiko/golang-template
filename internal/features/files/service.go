@@ -2,8 +2,8 @@ package files
 
 import (
 	"context"
-	"test/internal/features/files/models"
-	"test/protoc/file"
+	"file_service/internal/features/files/models"
+	"file_service/protoc/file"
 )
 
 type Service interface {

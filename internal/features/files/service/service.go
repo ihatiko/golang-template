@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
+	"file_service/internal/features/files/models"
+	"file_service/pkg/minio"
+	"file_service/protoc/file"
 	"github.com/ihatiko/log"
 	"github.com/opentracing/opentracing-go"
-	"test/internal/features/files/models"
-	"test/pkg/minio"
-	"test/protoc/file"
 )
 
 type FileService struct {

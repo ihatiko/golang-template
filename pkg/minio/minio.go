@@ -43,7 +43,7 @@ func (m *Client) connect() error {
 
 func (m *Client) Put(ctx context.Context, bucket, name, contentType, extension string, buffer io.Reader, size int64) (string, error) {
 	m.Reconnect()
-	_, err := m.client.PutObject(ctx, bucket, name, buffer, size, minio.PutObjectOptions{ContentType: contentType})
+	_, err := m.client.PutObject(ctx, bucket, fmt.Sprintf("%s.%s", name, extension), buffer, size, minio.PutObjectOptions{ContentType: contentType})
 	return path.Join(m.cfg.Host, bucket, fmt.Sprintf("%s.%s", name, extension)), err
 }
 

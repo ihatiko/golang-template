@@ -1,10 +1,10 @@
 package config
 
 import (
+	file_service_config "file_service/pkg/file-service-config"
+	"file_service/pkg/jaeger"
+	"file_service/pkg/minio"
 	"github.com/ihatiko/log"
-	file_service_config "test/pkg/file-service-config"
-	"test/pkg/jaeger"
-	"test/pkg/minio"
 	"time"
 )
 

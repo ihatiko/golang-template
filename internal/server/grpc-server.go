@@ -1,6 +1,7 @@
 package server
 
 import (
+	grpc_container "file_service/internal/server/registry/components/delivery/grpc"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -10,7 +11,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 	"net"
-	grpc_container "test/internal/server/registry/components/delivery/grpc"
 	"time"
 )
 
@@ -35,6 +35,7 @@ func (s *Server) StartGrpcServer() {
 		log.Fatal(err)
 	}
 	go func() {
+		log.InfoF("Start grpc server %s", s.Config.Server.GrpcPort)
 		err := grpcServer.Serve(listener)
 		if err != nil {
 			log.Fatal(err)

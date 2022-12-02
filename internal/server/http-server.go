@@ -1,10 +1,10 @@
 package server
 
 import (
+	"file_service/internal/server/registry/components/delivery/open-api"
 	"github.com/gofiber/fiber/v2"
+	"github.com/ihatiko/log"
 	jsoniter "github.com/json-iterator/go"
-	"log"
-	"test/internal/server/registry/components/delivery/open-api"
 	"time"
 )
 
@@ -23,6 +23,7 @@ func (s *Server) StartHttpServer() {
 	container.ServicePoints()
 
 	go func() {
+		log.InfoF("Start http server %s", s.Config.Server.Port)
 		err := app.Listen(s.Config.Server.Port)
 		if err != nil {
 			log.Fatal(err)

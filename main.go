@@ -1,7 +1,7 @@
 package main
 
 import (
-	"test/cmd"
+	"file_service/cmd"
 )
 
 func main() {
