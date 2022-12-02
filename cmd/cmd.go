@@ -9,8 +9,12 @@ import (
 	"test/internal/server/registry/providers"
 )
 
+const (
+	configPath = "./config/config.yml"
+)
+
 func Run() {
-	cfg, err := config.GetConfig[cfg.Config]()
+	cfg, err := config.GetConfig[cfg.Config](configPath)
 	if err != nil {
 		panic(err)
 	}
