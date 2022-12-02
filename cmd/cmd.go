@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	configPath = "./config/config.yml"
+	configPath = "./config/config"
 )
 
 func Run() {
